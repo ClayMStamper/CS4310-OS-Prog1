@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\clays\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\clays\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_OS-Prog1.-2011743829.00" t="ExcludeRecursive" />
+    <e p="C:\Users\clays\RiderProjects\OS-Prog1" t="IncludeFlat">
+      <e p="OS-Prog1" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Event.cs" t="Include" />
+        <e p="FCFS.cs" t="Include" />
+        <e p="HRRN.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="OS-Prog1.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="OS-Prog1.csproj" t="IncludeRecursive" />
+        <e p="Program.cs" t="Include" />
+        <e p="RR.cs" t="Include" />
+        <e p="Scheduler.cs" t="Include" />
+        <e p="Sim.cs" t="Include" />
+        <e p="SRTF.cs" t="Include" />
+      </e>
+      <e p="OS-Prog1.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
