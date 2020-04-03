@@ -6,7 +6,6 @@
     <e p="C:\Users\clays\RiderProjects\OS-Prog1" t="IncludeFlat">
       <e p="OS-Prog1" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
-        <e p="Event.cs" t="Include" />
         <e p="FCFS.cs" t="Include" />
         <e p="HRRN.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
@@ -17,6 +16,7 @@
           </e>
         </e>
         <e p="OS-Prog1.csproj" t="IncludeRecursive" />
+        <e p="Process.cs" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="RR.cs" t="Include" />
         <e p="Scheduler.cs" t="Include" />
