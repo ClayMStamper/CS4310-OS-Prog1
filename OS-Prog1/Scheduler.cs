@@ -2,58 +2,58 @@
 using System.Collections.Generic;
 
 namespace OS_Prog1 {
+    
+    public enum EventType {Arrival, Completion, Slice}
+
+    public class Event {
+        
+        private Process myProc;
+        private EventType type;
+        private float time;
+
+        public Event(Process myProc, EventType type, float time) {
+            this.myProc = myProc;
+            this.type = type;
+            this.time = time;
+        }
+
+        public override string ToString() {
+            
+            string typeStr = "";
+            switch (type) {
+                case EventType.Arrival:
+                    typeStr = "Arrival";
+                    break;
+                case EventType.Completion:
+                    typeStr = "Completion";
+                    break;
+                case EventType.Slice:
+                    typeStr = "Slice";
+                    break;
+            } //set type str
+            
+            string msg = $"\n========\nEvent: {myProc.id}";
+            
+            msg += $"\nMy type: {typeStr}";
+            msg += $"\nMy time: {time}";
+            msg += "\n==============\n";
+
+            
+            return msg;
+        }
+    }
+    
     public class Scheduler {
-        
-        protected float lambda, serviceTime, quantum;
-        protected PriorityEventQueue eventQueue;
 
-        protected Process lastArrived;
-        protected int processCount;
+        public List<Event> events;
         protected float clock;
-        
-        public Scheduler(float lambda, float serviceTime, float quantum) {
-            this.lambda = lambda;
-            this.serviceTime = serviceTime;
-            this.quantum = quantum;
-        }
+        protected ProcessGenerator processGenerator;
 
-        public virtual Queue<Event> ScheduleEventQueue(int processCount) {
-
-            clock = 0f;
+        public virtual void ScheduleProcesses() {
             
-            for (int i = 0; i < processCount; i++) {
-                
-                Process process = new Process();
-                process.arrival.time = clock + RandomExp();
-                process.completion.time = process.arrival.time + RandomExp();
-                process.arrival.processId = process.id;
-                process.completion.processId = process.id;
-
-
-            }
-
-            return eventQueue.ToQueue();
-
-        }
-
-        protected virtual void ScheduleEvent(Event eve) {
-            
-            
+            processGenerator = new ProcessGenerator(10000);
             
         }
-        
-        public float RandomExp() {
 
-            float u = 0, x = 0;
-
-            while (x <= 0) {
-                u = (float) new Random().NextDouble();
-                x = (-1 / lambda) * MathF.Log(u);
-            }
-
-            return x;
-
-        }
-        
     }
 }

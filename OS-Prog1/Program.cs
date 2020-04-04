@@ -2,10 +2,11 @@
 
 namespace OS_Prog1 {
     class Program {
+
+        public static float lambda, serviceTime, quantum;
         static void Main(string[] args) {
 
             int schedularType;
-            float lambda, serviceTime, quantum;
 
             if (!int.TryParse(args[0], out schedularType)) {
                 WriteError(args[0], 0);
@@ -23,7 +24,7 @@ namespace OS_Prog1 {
                 WriteError(args[3], 3);
             }
             
-            Sim sim = new Sim(schedularType, lambda, serviceTime, quantum);
+            Sim sim = new Sim(schedularType);
             
         }
 

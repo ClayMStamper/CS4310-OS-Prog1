@@ -8,43 +8,39 @@ namespace OS_Prog1 {
 
         public static Sim Singleton { get; private set; }
 
-        protected Queue<Event> readyQueue;
+        protected Queue<Event> eventQueue;
         private float lambda, serviceTime, quantum;
 
         private Scheduler scheduler;
         private float clock;
 
-        public Sim(int schedulerType, float lambda, float serviceTime, float quantumInterval) {
+        public Sim(int schedulerType) {
 
             Singleton = this;
 
-            Init(schedulerType, lambda, serviceTime, quantumInterval);
+            Init(schedulerType);
             Run();
             GenerateReport();
 
         }
 
-        private void Init(int schedulerType, float lambda, float serviceTime, float quantum) {
-
-            this.lambda = lambda;
-            this.serviceTime = serviceTime;
-            this.quantum = quantum;
+        private void Init(int schedulerType) {
 
             switch (schedulerType) {
                 case 1:
-                    scheduler = new FCFS(lambda, serviceTime, quantum);
+                    scheduler = new FCFS();
                     break;
                 case 2:
-                    scheduler = new SRTF(lambda, serviceTime, quantum);
+                    scheduler = new SRTF();
                     break;
                 case 3:
-                    scheduler = new HRRN(lambda, serviceTime, quantum);
+                    scheduler = new HRRN();
                     break;
                 case 4:
-                    scheduler = new RR(lambda, serviceTime, quantum);
+                    scheduler = new RR();
                     break;
                 default:
-                    scheduler = new Scheduler(lambda, serviceTime, quantum); //shouldn't ever happen
+                    scheduler = new Scheduler(); //shouldn't ever happen
                     break;
             }
 
@@ -52,21 +48,14 @@ namespace OS_Prog1 {
 
         private void Run() {
 
-            readyQueue = scheduler.ScheduleEventQueue(10000);
-
-            while (readyQueue.Count > 0) {
-
-                Event eve = readyQueue.Dequeue();
-                clock = eve.time;
-
-            }
+            scheduler.ScheduleProcesses();
 
         }
 
-        private void GenerateReport() { }
+        private void GenerateReport() {
+            
+        }
 
-        //generate random value following an exponential distribution
-        
 
     }
 }
