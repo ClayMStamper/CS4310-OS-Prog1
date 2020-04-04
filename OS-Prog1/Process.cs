@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OS_Prog1 {
     public class Process {
-        
-        private float arrivalTime, serviceTime;
-        
-        public Process (Scheduler myScheduler) {
 
-            arrivalTime = Sim.Singleton.RandomExp();
-            serviceTime = Sim.Singleton.RandomExp(); //this might need a seperate init function
+        public static int count;
 
+        public Process() {
+            id = count;
+            count++;
         }
         
+        public int id;
+        public ProcessArrival arrival = new ProcessArrival();
+        public ProcessCompletion completion = new ProcessCompletion();
+
     }
 }

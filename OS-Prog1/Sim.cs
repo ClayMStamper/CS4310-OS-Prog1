@@ -8,10 +8,11 @@ namespace OS_Prog1 {
 
         public static Sim Singleton { get; private set; }
 
-        protected Queue<Process> events;
+        protected Queue<Event> readyQueue;
         private float lambda, serviceTime, quantum;
 
         private Scheduler scheduler;
+        private float clock;
 
         public Sim(int schedulerType, float lambda, float serviceTime, float quantumInterval) {
 
@@ -51,25 +52,21 @@ namespace OS_Prog1 {
 
         private void Run() {
 
-//            events.Dequeue().Process();
+            readyQueue = scheduler.ScheduleEventQueue(10000);
+
+            while (readyQueue.Count > 0) {
+
+                Event eve = readyQueue.Dequeue();
+                clock = eve.time;
+
+            }
 
         }
 
         private void GenerateReport() { }
 
         //generate random value following an exponential distribution
-        public float RandomExp() {
-
-            float u = 0, x = 0;
-
-            while (x <= 0) {
-                u = (float) new Random().NextDouble();
-                x = (-1 / lambda) * MathF.Log(u);
-            }
-
-            return x;
-
-        }
+        
 
     }
 }
