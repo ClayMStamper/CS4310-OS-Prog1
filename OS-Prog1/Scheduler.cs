@@ -9,12 +9,27 @@ namespace OS_Prog1 {
         
         public Process myProc;
         public EventType type;
-        public float time;
+        public double time;
 
-        public Event(Process myProc, EventType type, float time) {
+        public Event(Process myProc, EventType type, double time) {
             this.myProc = myProc;
             this.type = type;
             this.time = time;
+        }
+        
+        public Event(Process myProc, EventType type) {
+            this.myProc = myProc;
+            this.type = type;
+            switch (type) {
+                case EventType.Arrival:
+                    time = myProc.arrival;
+                    break;
+                case EventType.Completion:
+                    break;
+                default:
+                    
+                    break;
+            }
         }
 
         public override string ToString() {
@@ -52,23 +67,28 @@ namespace OS_Prog1 {
         protected float clock;
         protected ProcessGenerator processGenerator;
 
-        public virtual void ScheduleProcess(Process proc) { //insert into priority queue logic
+        public virtual void EnqueueReady(Process proc) { //insert into priority queue logic
             readyList.Insert(0, proc);
         }
 
-        public virtual Process DequeueReadyProcess() {
+        public virtual Process DequeueFromReady() {
             
             if (readyList.Count <= 0)
                 return null;
             
-            Process end = readyList[^0];
+            Process end = readyList[^1];
+            readyList.Remove(end);
             return end;
             
+        }
+
+        public bool ReadyQueueEmpty() {
+            return (readyList.Count <= 0);
         }
         
         public virtual void SetupProcesses() {    
             
-            processGenerator = new ProcessGenerator(10000);
+            processGenerator = new ProcessGenerator(10);
             processGenerator.Generate();
             processList = processGenerator.processes;
             GetArrivalEvents();
@@ -76,13 +96,19 @@ namespace OS_Prog1 {
         }
 
         private void GetArrivalEvents() {
-            foreach (Process proc in processList) {
-                Event arrEvent = new Event(proc, EventType.Arrival, proc.arrival);
+            for (var i = 0; i < processList.Count; i++) {
+                Process proc = processList[i];
+                Event lastEvent = null;
+                if (arrivalEvents.Count > 0)
+                    lastEvent= arrivalEvents[i-1];
+                double lastArrTime = lastEvent == null ? 0 : lastEvent.time;
+                Event arrEvent = new Event(proc, EventType.Arrival, proc.arrival + lastArrTime);
                 arrivalEvents.Add(arrEvent);
             }
         }
 
-        
-
+        public override string ToString() {
+            return processGenerator.ToString();
+        }
     }
 }

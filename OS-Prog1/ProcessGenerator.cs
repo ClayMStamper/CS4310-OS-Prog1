@@ -4,15 +4,16 @@ using System.Collections.Generic;
 namespace OS_Prog1 {
     public class Process {
         public int id;
-        public float arrival, burst, completion, turnAround, timeRem;
+        public double arrival, burst, start, completion, turnAround, timeRem;
 
         public override string ToString() {
             string msg = $"\n========\nProcess: {id}";
             msg += $"\nMy arrival: {arrival}";
             msg += $"\nMy burst time: {burst}";
+            msg += $"\nMy Start time: {start}";
             msg += $"\nMy completion time: {completion}";
             msg += $"\nMy turn Around: {turnAround}";
-            msg += $"\nMy time rem: {timeRem}";
+//            msg += $"\nMy time rem: {timeRem}";
             msg += "\n==============\n";
             
             return msg;

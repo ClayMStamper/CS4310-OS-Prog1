@@ -8,9 +8,15 @@ namespace OS_Prog1 {
 
         public static Sim Singleton { get; private set; }
 
-        protected List<Event> eventQueue;
-
+        protected List<Event> eventQueue = new List<Event>();
         private Scheduler scheduler;
+        
+        List<Process> processes = new List<Process>();
+            
+        //initialize fields needed for loop
+        private Process currentProcess;
+        private double clock;
+        private double nextClock, idleTime;
 
         public Sim(int schedulerType) {
 
@@ -24,6 +30,7 @@ namespace OS_Prog1 {
 
         private void Init(int schedulerType) {
 
+            //Init Scheduler
             switch (schedulerType) {
                 case 1:
                     scheduler = new FCFS();
@@ -41,38 +48,69 @@ namespace OS_Prog1 {
                     scheduler = new Scheduler(); //shouldn't ever happen
                     break;
             }
+            
+            //generate list of processes
+            scheduler.SetupProcesses();
+            processes = scheduler.processList;
+            clock = processes[0].arrival;
 
         }
 
         private void Run() {
 
-            scheduler.SetupProcesses();
-            List<Process> processes = scheduler.processList;
-            Process current = processes[0];
-            float clock = 0, lastClock = 0, idleTime = 0;
-
+            
             foreach (Event arrEvent in scheduler.arrivalEvents) {
+
+                double arrTime = clock + arrEvent.time;
                 
-                float arrTime = lastClock + arrEvent.time;
+                //handle time-slice TODO
                 
-                if (arrTime < clock) { //arrival while current process is being serviced, send to scheduler
-                    eventQueue.Add(arrEvent); //track the event for analytics
-                    scheduler.ScheduleProcess(arrEvent.myProc); //process arrived - have scheduler handle
-                }
-                else {
-                    lastClock = clock;
-                    current = scheduler.DequeueReadyProcess();
-                    clock += current.burst;
-                }
+                //handle arrival 
+                eventQueue.Add(arrEvent); 
+                scheduler.EnqueueReady(arrEvent.myProc); //process arrived - have scheduler handle
+
+                //handle completion
+                if (arrTime >= nextClock) 
+                    StartProcess(scheduler.DequeueFromReady());
+                
             }
 
-            while (scheduler.readyList.Count > 0) {
-                
+            //handle ready queue once events are finished arriving
+            while (!scheduler.ReadyQueueEmpty()) {
+                StartProcess(scheduler.DequeueFromReady());
             }
+
+            foreach (Event eve in eventQueue) {
+//                Debug.Log($"{eve}");
+            }
+
+        }
+
+        private void StartProcess(Process proc) {
+
+//            Debug.Log($"\n***STARTING PROCESS***\n{proc}");
+            
+            //record metrics for finished process
+            if (currentProcess != null) {
+                currentProcess.completion = clock;
+                currentProcess.turnAround = currentProcess.completion - currentProcess.start;
+                eventQueue.Add(new Event(currentProcess, EventType.Completion, nextClock));
+            }
+
+            proc.start = clock;
+            nextClock = proc.start + proc.burst;
+            clock = nextClock;
+
+            currentProcess = proc;
+
             
         }
 
         private void GenerateReport() {
+
+            foreach (Process process in processes) {
+                Debug.Log($"{process}");
+            }
             
         }
 
