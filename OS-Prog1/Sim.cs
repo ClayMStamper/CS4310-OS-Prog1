@@ -8,11 +8,9 @@ namespace OS_Prog1 {
 
         public static Sim Singleton { get; private set; }
 
-        protected Queue<Event> eventQueue;
-        private float lambda, serviceTime, quantum;
+        protected List<Event> eventQueue;
 
         private Scheduler scheduler;
-        private float clock;
 
         public Sim(int schedulerType) {
 
@@ -48,8 +46,30 @@ namespace OS_Prog1 {
 
         private void Run() {
 
-            scheduler.ScheduleProcesses();
+            scheduler.SetupProcesses();
+            List<Process> processes = scheduler.processList;
+            Process current = processes[0];
+            float clock = 0, lastClock = 0, idleTime = 0;
 
+            foreach (Event arrEvent in scheduler.arrivalEvents) {
+                
+                float arrTime = lastClock + arrEvent.time;
+                
+                if (arrTime < clock) { //arrival while current process is being serviced, send to scheduler
+                    eventQueue.Add(arrEvent); //track the event for analytics
+                    scheduler.ScheduleProcess(arrEvent.myProc); //process arrived - have scheduler handle
+                }
+                else {
+                    lastClock = clock;
+                    current = scheduler.DequeueReadyProcess();
+                    clock += current.burst;
+                }
+            }
+
+            while (scheduler.readyList.Count > 0) {
+                
+            }
+            
         }
 
         private void GenerateReport() {

@@ -24,16 +24,15 @@ namespace OS_Prog1 {
         private int count;
         private float lambda, servTime;
 
-        public List<Process> processes;
+        public List<Process> processes = new List<Process>();
 
         public ProcessGenerator(int count) {
             this.count = count;
             lambda = Program.lambda;
             servTime = Program.serviceTime;
-            GenerateProcesses();
         }
 
-        private void GenerateProcesses() {
+        public void Generate() {
 
             for (int i = 0; i < count; i++) {
                 
@@ -41,6 +40,7 @@ namespace OS_Prog1 {
                 proc.arrival = RandomExp(lambda);
                 proc.burst = RandomExp(servTime);
                 proc.timeRem = proc.burst;
+                proc.id = i;
                 
                 processes.Add(proc);
 
@@ -50,6 +50,17 @@ namespace OS_Prog1 {
 
         private float RandomExp(float t) {
 
+            
+            /*
+             * float u,x;
+	            x = 0;
+	            while (x == 0)
+		            {
+			            u = urand();
+			            x = (-1/lambda)*log(u);
+		            }
+	            return(x);
+             */
             float u = 0, x = 0;
 
             while (x <= 0) {
