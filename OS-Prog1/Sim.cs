@@ -52,7 +52,12 @@ namespace OS_Prog1 {
             //generate list of processes
             scheduler.SetupProcesses();
             processes = scheduler.processList;
-            clock = processes[0].arrival;
+            
+            //start first process
+            currentProcess = processes[0];
+            clock = currentProcess.arrival;
+            nextClock = clock + currentProcess.burst;
+            currentProcess.start = currentProcess.arrival;
 
         }
 
@@ -61,7 +66,7 @@ namespace OS_Prog1 {
             
             foreach (Event arrEvent in scheduler.arrivalEvents) {
 
-                double arrTime = clock + arrEvent.time;
+                arrEvent.myProc.arrival = arrEvent.time;
                 
                 //handle time-slice TODO
                 
@@ -70,7 +75,7 @@ namespace OS_Prog1 {
                 scheduler.EnqueueReady(arrEvent.myProc); //process arrived - have scheduler handle
 
                 //handle completion
-                if (arrTime >= nextClock) 
+                if (arrEvent.time >= nextClock) 
                     StartProcess(scheduler.DequeueFromReady());
                 
             }
@@ -88,21 +93,24 @@ namespace OS_Prog1 {
 
         private void StartProcess(Process proc) {
 
-//            Debug.Log($"\n***STARTING PROCESS***\n{proc}");
+//            proc.start = clock;
+//            clock = nextClock;
+//            nextClock = proc.start + proc.burst;
+
+            proc.start = clock > proc.arrival ? clock : proc.arrival;
+            clock = nextClock;
+            nextClock = proc.start + proc.burst;
             
-            //record metrics for finished process
+            //enqueue completion event for finished process
             if (currentProcess != null) {
                 currentProcess.completion = clock;
                 currentProcess.turnAround = currentProcess.completion - currentProcess.start;
                 eventQueue.Add(new Event(currentProcess, EventType.Completion, nextClock));
             }
-
-            proc.start = clock;
-            nextClock = proc.start + proc.burst;
-            clock = nextClock;
+            
+            
 
             currentProcess = proc;
-
             
         }
 
@@ -111,7 +119,7 @@ namespace OS_Prog1 {
             foreach (Process process in processes) {
                 Debug.Log($"{process}");
             }
-            
+
         }
 
 

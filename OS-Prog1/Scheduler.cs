@@ -88,9 +88,14 @@ namespace OS_Prog1 {
         
         public virtual void SetupProcesses() {    
             
-            processGenerator = new ProcessGenerator(10);
+            processGenerator = new ProcessGenerator(100);
             processGenerator.Generate();
             processList = processGenerator.processes;
+
+//            foreach (Process process in processList) {
+//                Debug.Log($"{process}");
+//            }
+            
             GetArrivalEvents();
             
         }
