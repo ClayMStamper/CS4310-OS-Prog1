@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OS_Prog1 {
 
@@ -116,9 +117,14 @@ namespace OS_Prog1 {
 
         private void GenerateReport() {
 
+            StreamWriter writer = new StreamWriter("./sim.data");
+            writer.Write("");
+            
             foreach (Process process in processes) {
-                Debug.Log($"{process}");
+                writer.WriteLine(process);
+//                Debug.Log($"{process}");
             }
+            
 
         }
 

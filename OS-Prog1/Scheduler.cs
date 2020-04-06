@@ -88,7 +88,7 @@ namespace OS_Prog1 {
         
         public virtual void SetupProcesses() {    
             
-            processGenerator = new ProcessGenerator(100);
+            processGenerator = new ProcessGenerator(10000);
             processGenerator.Generate();
             processList = processGenerator.processes;
 

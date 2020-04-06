@@ -18,6 +18,12 @@ namespace OS_Prog1 {
             
             return msg;
         }
+
+        public string ToData() {
+            string msg = "\n";
+//            msg += $"{arrival},{arrival},{arrival},{arrival},{arrival},{arrival},"
+            return msg;
+        }
     }
     
     public class ProcessGenerator {
